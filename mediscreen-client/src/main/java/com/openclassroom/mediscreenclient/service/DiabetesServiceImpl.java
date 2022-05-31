@@ -27,6 +27,8 @@ public class DiabetesServiceImpl implements DiabetesService{
                 "Anticorps"});
 
 
+    public DiabetesServiceImpl() {
+    }
 
 
     public String assessDiabetes(List<NotesBean> notes, PatientBean patient){
