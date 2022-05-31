@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <h2>Find Patient</h2>
+    </div>
+
+
+    <div class="row">
+
+        <form action="#" th:action="@{/find/patient?family=${patient.family}&given=${given}}" th:object="${patient}" method="get" class="form-horizontal"
+              style="width: 100%">
+
+            <div class="form-group">
+                <label for="family">Name</label>
+                <br>
+                <input
+                        type="text" th:field="*{family}" class="form-control" id="family"
+                        aria-describedby="familyHelp" placeholder="Account">
+                <p class="text-danger" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
+            </div>
+
+            <div class="form-group">
+            <label for="given">Name</label>
+            <br>
+            <input
+                    type="text" th:field="*{given}" class="form-control" id="given"
+                    aria-describedby="givenHelp" placeholder="given">
+            <p class="text-danger" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Find</button>
+
+        </form>
+
+    </div>
+
+    <div class="row">
+
+        <table class="table table-bordered" th:if="${patient.id!=null}">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>family</th>
+                <th>given</th>
+                <th>dob</th>
+                <th>sex</th>
+                <th>address</th>
+                <th>phone</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- TODO: Show all Bids to the table, the Action column will have Edit & Delete buttons -->
+
+            <tr th:if="${patient.id!=null}">
+                <td><span th:text="${patient.id}"> Id </span></td>
+                <td><span th:text="${patient.family}"> family </span></td>
+                <td><span th:text="${patient.given}"> given </span></td>
+                <td><span th:text="${patient.dob}"> dob </span></td>
+                <td><span th:text="${patient.sex}"> sex </span></td>
+                <td><span th:text="${patient.address}"> address </span></td>
+                <td><span th:text="${patient.phone}"> phone </span></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+</body>
+</html>
