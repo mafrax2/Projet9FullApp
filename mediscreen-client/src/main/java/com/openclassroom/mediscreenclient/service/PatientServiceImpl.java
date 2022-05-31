@@ -12,6 +12,12 @@ public class PatientServiceImpl implements PatientService{
     @Autowired
     private MediscreenProxy proxy;
 
+    public PatientServiceImpl(MediscreenProxy proxy) {
+        this.proxy = proxy;
+    }
+
+    public PatientServiceImpl() {
+    }
 
 
     @Override

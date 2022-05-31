@@ -15,6 +15,13 @@ public class NotesServiceImpl implements NotesService {
     @Autowired
     private NotesProxy proxy;
 
+    public NotesServiceImpl(NotesProxy proxy) {
+        this.proxy = proxy;
+    }
+
+    public NotesServiceImpl() {
+    }
+
     @Override
     public NotesBean addNotes(NotesBean notes) {
         return proxy.addNotes(notes);
