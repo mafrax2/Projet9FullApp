@@ -1,0 +1,67 @@
+version: "3"
+services:
+  client-server:
+    container_name: microservice-client
+    build:
+      context: mediscreen-client
+      dockerfile: Dockerfile
+    image: client-server:latest
+    volumes:
+      - C:\Users\marc\Downloads\Copie_de_Notes_du_praticien_P9.xlsx:/var/www/html
+    ports:
+      - "8080:8080"
+      - '5005:5005'
+    environment:
+      - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+    networks:
+      - mediscreen-mysql
+
+  mediscreen-jdbc:
+    container_name: microservice-mediscreen
+    build:
+      context: mediscreen
+      dockerfile: Dockerfile
+    image: mediscreen-jdbc:latest
+    ports:
+      - "8081:8081"
+    networks:
+      - mediscreen-mysql
+    depends_on:
+      - mysqldb
+    restart: always
+
+  api-database:
+    image: mongo:latest
+    container_name: "api-database"
+    ports:
+      - 27017:27017
+    networks:
+      - mediscreen-mysql
+
+  mediscreen-notes:
+    container_name: microservice-notes
+    build:
+      context: mediscreen-notes
+      dockerfile: Dockerfile
+    image: mediscreen-notes:latest
+    ports:
+      - "8082:8082"
+    networks:
+      - mediscreen-mysql
+    links:
+      - api-database
+
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    networks:
+      - mediscreen-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=bootdb
+
+
+networks:
+  mediscreen-mysql:
+    driver : bridge
