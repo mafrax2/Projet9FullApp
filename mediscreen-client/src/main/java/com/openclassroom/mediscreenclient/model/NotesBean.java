@@ -19,4 +19,7 @@ public class NotesBean {
         this.patientId = patientId;
         this.date = date;
     }
+
+    public NotesBean() {
+    }
 }

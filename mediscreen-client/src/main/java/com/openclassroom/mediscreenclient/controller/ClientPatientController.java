@@ -3,8 +3,10 @@ package com.openclassroom.mediscreenclient.controller;
 
 import com.openclassroom.mediscreenclient.model.NotesBean;
 import com.openclassroom.mediscreenclient.model.PatientBean;
-import com.openclassroom.mediscreenclient.service.NotesService;
+
 import com.openclassroom.mediscreenclient.service.PatientService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class ClientPatientController {
 
 
+    @Autowired
     private PatientService patientService;
-    private NotesService notesService;
+
 
     public ClientPatientController(PatientService patientService) {
         this.patientService = patientService;
@@ -25,8 +29,9 @@ public class ClientPatientController {
 
 
     @GetMapping("find/patient/{id}")
-    public PatientBean findPatient(@PathVariable int id){
-        return patientService.findPatientById(id);
+    public ResponseEntity<PatientBean> findPatient(@PathVariable int id){
+        PatientBean patientById = patientService.findPatientById(id);
+        return ResponseEntity.ok(patientById);
     }
 
         @GetMapping("/find/patient")

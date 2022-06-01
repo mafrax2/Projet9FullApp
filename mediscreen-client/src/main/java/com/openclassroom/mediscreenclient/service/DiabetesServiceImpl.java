@@ -7,8 +7,10 @@ import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -88,7 +90,11 @@ public class DiabetesServiceImpl implements DiabetesService{
         Calendar calendar = Calendar.getInstance();
         TimeZone timeZone = calendar.getTimeZone();
         LocalDate now = LocalDate.now();
-        LocalDate dobLocale = LocalDate.parse(dob.toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String format = sdf.format(dob);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        String text = dob.toString();
+        LocalDate dobLocale = LocalDate.parse(format, df);
         int years = Period.between( dobLocale, now).getYears();
         return years;
     }
