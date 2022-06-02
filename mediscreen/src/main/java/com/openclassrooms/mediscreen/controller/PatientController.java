@@ -6,12 +6,15 @@ import com.openclassrooms.mediscreen.service.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.persistence.GeneratedValue;
+import javax.validation.Valid;
 
 @RestController
 @Data
@@ -49,23 +52,31 @@ public class PatientController {
     }
 
     @PostMapping("/patient/add")
-    public Patient savePatient(@RequestBody Patient patient){
-        System.out.println("clicked  in ms");
+    public ResponseEntity<Patient>  savePatient(@Valid @RequestBody Patient patient,  BindingResult result){
+        System.out.println("clicked add");
         System.out.println(patient);
+        System.out.println(result);
+        if(!result.hasErrors()){
+            Patient patientbean = service.savePatient(patient);
+            return ResponseEntity.ok((patientbean));
+        }
 
-     service.savePatient(patient);
-     return patient;
+        return ResponseEntity.ok((patient));
     }
 
     @PutMapping("/edit/patient/{id}")
-    public Patient editPatient(@PathVariable Integer id, @RequestBody Patient patient){
+    public ResponseEntity<Patient>  editPatient(@PathVariable Integer id,@Valid @RequestBody Patient patient, BindingResult result){
         System.out.println("clicked edit");
-        System.out.println(id);
+        System.out.println(result);
         System.out.println(patient);
 //        Patient id1 = service.findById(id);
 //        id1.setFamily(patient.getFamily());
-        service.savePatient(patient);
-        return patient;
+        if(!result.hasErrors()){
+            Patient patientbean = service.savePatient(patient);
+            return ResponseEntity.ok((patientbean));
+        }
+
+        return ResponseEntity.ok((patient));
     }
 
 }

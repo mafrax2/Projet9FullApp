@@ -3,6 +3,7 @@ package com.openclassroom.mediscreenclient.model;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -10,9 +11,9 @@ import java.util.Date;
 public class PatientBean {
 
     private Integer id;
-    @NotBlank
+    @NotBlank(message = "family ne doit pas etre vide")
     private String family;
-    @NotBlank
+    @NotBlank(message = "given ne doit pas etre vide")
     private String given;
     private Date dob;
     private String sex;

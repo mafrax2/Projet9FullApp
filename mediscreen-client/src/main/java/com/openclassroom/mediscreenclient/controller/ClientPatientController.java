@@ -1,19 +1,22 @@
 package com.openclassroom.mediscreenclient.controller;
 
 
-import com.openclassroom.mediscreenclient.model.NotesBean;
 import com.openclassroom.mediscreenclient.model.PatientBean;
-
 import com.openclassroom.mediscreenclient.service.PatientService;
+
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
+
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class ClientPatientController {
@@ -46,23 +49,30 @@ public class ClientPatientController {
     }
 
     @PostMapping("/patient/add")
-    public ResponseEntity<PatientBean> savePatient(@Valid @RequestBody PatientBean patient,  BindingResult result){
+    public ResponseEntity<PatientBean>  savePatient(@RequestBody @Valid PatientBean patient, BindingResult result){
         System.out.println("clicked add");
         System.out.println(patient);
         System.out.println(result);
-        PatientBean patientBean = patientService.savePatient(patient);
-        return ResponseEntity.ok((patientBean));
+//        if(!result.hasErrors()){
+            PatientBean patientBean = patientService.savePatient(patient);
+            return ResponseEntity.ok((patientBean));
+//        }
+//        return ResponseEntity.ok(patient);
     }
 
     @PutMapping("/edit/patient/{id}")
-    public PatientBean editPatient(@PathVariable Integer id,@Valid @RequestBody PatientBean patient, BindingResult result){
+    public ResponseEntity<PatientBean>  editPatient(@PathVariable Integer id, @RequestBody PatientBean patient, BindingResult result){
         System.out.println("clicked edit");
         System.out.println(result);
         System.out.println(patient);
 //        Patient id1 = service.findById(id);
 //        id1.setFamily(patient.getFamily());
-        patientService.savePatient(patient);
-        return patient;
+        if(!result.hasErrors()){
+            PatientBean patientBean = patientService.savePatient(patient);
+            return ResponseEntity.ok((patientBean));
+        }
+
+        return ResponseEntity.ok((patient));
     }
 
 

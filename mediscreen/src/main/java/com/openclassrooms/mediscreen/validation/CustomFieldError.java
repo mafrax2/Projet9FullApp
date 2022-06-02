@@ -1,4 +1,4 @@
-package com.openclassroom.mediscreenclient.validation;
+package com.openclassrooms.mediscreen.validation;
 
 public class CustomFieldError {
     private String field;

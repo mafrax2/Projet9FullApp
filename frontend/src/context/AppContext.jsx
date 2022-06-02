@@ -9,7 +9,7 @@ export const TransactionProvider = ({ children }) => {
     const [patient, setPatient] = useState();
     const [notes, setNotes] = useState();
     const [diabetes, setDiabetes] = useState();
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({family: '', given: ' '});
 
 
     const assessDiabetes = async (id) => {
@@ -166,37 +166,51 @@ export const TransactionProvider = ({ children }) => {
             })
 
         const patient2 = await response.json().then(data => {
-            console.log(JSON.stringify(data))
-            if (data.fieldErrors) {
-                data.fieldErrors.forEach(fieldError => {
-                    console.log(fieldError);
-                    if (fieldError.field === 'family') {
-                        const errors1 = {
-                            family: fieldError.message
-                        }
-                        setErrors(errors1)
-                    }
-                    if (fieldError.field === 'given') {
-                        const errors1 = {
-                            given: fieldError.message
-                        }
-                        setErrors(errors1)
-                    }
+        console.log(data)
+            if (data.error1) {
+                for (const [key, value] of Object.entries(data)) {
+                        console.log(`${key}`)
+                                  if (value.includes("family")) {
+                                      const errors1 = {...errors,
+                                          family: value
+                                      }
 
-                });
+                                        setErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            family: value
+                                        }))
+                                        console.log(errors)
+                                      }
+                                  if (value.includes("given")) {
+                                      console.log("has error on give name " )
+                                      const errors2 = {...errors,
+                                          given: value
+                                      }
+                                       setErrors(prevErrors => ({
+                                               ...prevErrors,
+                                               given: value
+                                           }))
+                                           console.log(errors)
+
+                                  }
+                }
+
+
+
             } else {
                 alert("Success !!");
+                  console.log(patient2);
+
+
+                        setPatient(patient2);
             }
 
         });
 
-        setPatient(patient2);
-        console.log(response)
-
     }
 
     const addPatient = async (patient) => {
-        setErrors({});
+
         const response = await fetch(`/patient/add`
             , {
 
@@ -213,34 +227,51 @@ export const TransactionProvider = ({ children }) => {
             })
 
 
-        const patient2 = await response.json().then(data => {
-            if (data.fieldErrors) {
-                data.fieldErrors.forEach(fieldError => {
-                    console.log("has error " + data.fieldErrors)
-                    if (fieldError.field === 'family') {
-                        const errors1 = {
-                            family: fieldError.message
-                        }
-                        setErrors(errors1)
-                    }
-                    if (fieldError.field === 'given') {
-                        console.log("has error on give name " + data.fieldErrors)
-                        const errors1 = {
-                            given: fieldError.message
-                        }
-                        setErrors(errors1)
-                    }
 
-                });
+
+        const patient2 = await response.json().then(data => {
+        console.log(data)
+            if (data.error1) {
+                for (const [key, value] of Object.entries(data)) {
+                        console.log(`${key}`)
+                                  if (value.includes("family")) {
+                                      const errors1 = {...errors,
+                                          family: value
+                                      }
+
+                                        setErrors(prevErrors => ({
+                                            ...prevErrors,
+                                            family: value
+                                        }))
+                                        console.log(errors)
+                                      }
+                                  if (value.includes("given")) {
+                                      console.log("has error on give name " )
+                                      const errors2 = {...errors,
+                                          given: value
+                                      }
+                                       setErrors(prevErrors => ({
+                                               ...prevErrors,
+                                               given: value
+                                           }))
+                                           console.log(errors)
+
+                                  }
+                }
+
+
+
             } else {
                 alert("Success !!");
+                  console.log(patient2);
+
+
+                        setPatient(patient2);
             }
 
         });
 
 
-
-        setPatient(patient2);
 
     }
 
